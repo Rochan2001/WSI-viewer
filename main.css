@@ -1,0 +1,163 @@
+/* html, body {
+  height: 100%;
+  width: 100%;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+} */
+
+html,
+body,
+#map {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+#info {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.75);
+  padding: 2px;
+}
+.jumbotron p {
+  font-weight: normal;
+}
+
+.navbar {
+  margin: 0;
+}
+
+/* #map {
+  width: 100%;
+  height: calc(100% - 60px);
+  overflow: hidden;
+  z-index: 0;
+} */
+
+.gj-screenshot-link {
+  cursor: pointer;
+}
+li.gj-screenshot-result,
+li.gj-screenshot-waiting {
+  display: none;
+}
+li a.gj-screenshot-download {
+  padding: 0;
+}
+li.gj-screenshot-result img {
+  max-height: 60px;
+  max-width: 120px;
+}
+
+#controls {
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+  left: 10px;
+  top: 80px;
+  z-index: 1000;
+  border-radius: 5px;
+  border: 1px solid grey;
+  box-shadow: 1px 1px 3px black;
+  opacity: 0.5;
+  transition: opacity 250ms ease;
+  background: #ccc;
+  color: black;
+  padding: 4px;
+  font-size: 14px;
+  max-height: calc(100% - 100px);
+  min-width: 310px;
+}
+#controls:hover {
+  opacity: 1;
+}
+#controls .form-group {
+  margin-bottom: 0;
+}
+#controls label {
+  min-width: 160px;
+}
+#controls.no-controls {
+  display: none;
+}
+.annotationtype button.lastused {
+  color: #373a3c;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.annotationtype button.active {
+  color: white;
+  background-color: #025aa5;
+  border-color: #01549b;
+}
+.shortlabel {
+  margin-bottom: 5px;
+  font-weight: bold;
+  display: inline-block;
+}
+#instructions .annotation {
+  display: none;
+  max-width: 300px;
+  font-size: 12px;
+  line-height: 1.42857em;
+  min-height: 2.85714em;
+}
+#instructions[annotation="polygon"] .annotation.polygon,
+#instructions[annotation="rectangle"] .annotation.rectangle,
+#instructions[annotation="point"] .annotation.point,
+#instructions[annotation="line"] .annotation.line,
+#instructions[annotation="none"] .annotation.none {
+  display: block;
+}
+#controls a {
+  color: #333;
+  cursor: pointer;
+}
+.entry span,
+.entry a {
+  display: inline-block;
+}
+.entry .entry-name {
+  width: 82%;
+}
+.entry a {
+  width: 6%;
+  text-align: right;
+}
+.entry .entry-edit {
+  font-weight: bold;
+}
+.entry-remove-all {
+  float: right;
+}
+#annotationheader,
+.entry#sample {
+  display: none;
+}
+#editdialog {
+  font-size: 14px;
+}
+#editdialog .form-group {
+  margin-bottom: 0px;
+}
+#editdialog #edit-update {
+  float: right;
+  margin-left: 10px;
+}
+#editdialog label {
+  min-width: 105px;
+}
+#editdialog #edit-validation-error {
+  color: red;
+  font-weight: bold;
+}
+#geojson {
+  width: 100%;
+  resize: vertical;
+}

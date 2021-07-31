@@ -1,37 +1,150 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/geojs/0.12.2/geo.min.js" integrity="sha256-t9oLE+BFJc7iWaTIqMFk+8dYJn5kmfg/FIdKNuAxMII=" crossorigin="anonymous"></script>
-<style>
-html,body,#map {
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-}
-#info {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: rgba(255,255,255,0.75);
-  padding: 2px;
-}
-</style>
-</head>
-<body>
-  <div id="map"></div>
-  <div id="info"></div>
-  <script>
-  let params = geo.util.pixelCoordinateParams(
-    '#map',31744, 37632,254,254);
-  const map = geo.map(params.map);
-      params.layer.url = `gmapdir/{z}/{y}/{x}.jpg`;
-  const layer = map.createLayer('osm', params.layer);
-
-map.geoOn(geo.event.mousemove, function (evt) {
-    $('#info').text('x: ' + evt.geo.x.toFixed(6) + ', y: ' + evt.geo.y.toFixed(6));
-  });
-  </script>
-</body>
+  <head>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/geojs/0.12.2/geo.min.js"
+      integrity="sha256-t9oLE+BFJc7iWaTIqMFk+8dYJn5kmfg/FIdKNuAxMII="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+      integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <div id="controls">
+      <div
+        class="form-group annotationtype"
+        title="Select the type of annotation to add."
+      >
+        <div class="shortlabel">Add</div>
+        <button class="" id="rectangle" next="polygon">Rectangle</button
+        ><button id="polygon" next="point">Polygon</button
+        ><button id="point" next="line">Point</button
+        ><button id="line" next="rectangle" class="lastused">Line</button>
+      </div>
+      <div class="form-group">
+        <div id="instructions" annotation="none">
+          <div class="annotation none"></div>
+          <div class="annotation polygon">
+            Left-click points in the polygon. Double click, right click, or
+            click the starting point to close the polygon.
+          </div>
+          <div class="annotation rectangle">
+            Left click-and-drag or left click opposite corners to draw a
+            rectangle.
+          </div>
+          <div class="annotation point">Left click to create a point.</div>
+          <div class="annotation line">
+            Left-click points in the line. Double click, right click, or click
+            the starting point to end the line.
+          </div>
+        </div>
+      </div>
+      <div
+        class="form-group"
+        title="If enabled, left-click to add another annotation, and right-click to switch annotation type.  Otherwise, you must click a button above."
+      >
+        <label for="clickmode">Click mode</label
+        ><select id="clickmode" param-name="clickmode" placeholder="edit">
+          <option value="edit">Select and Edit</option>
+          <option value="add">Add New</option>
+          <option value="none">None</option>
+        </select>
+      </div>
+      <div
+        class="form-group"
+        title="If enabled, immediately after adding one annotation, you can add another without either left-clicking or selecting a button."
+      >
+        <label for="keepadding">Keep adding annotations</label
+        ><input
+          id="keepadding"
+          param-name="keepadding"
+          type="checkbox"
+          placeholder="false"
+        />
+      </div>
+      <div class="form-group" title="If disabled, hide all annotation labels.">
+        <label for="showLabels">Show annotation labels</label
+        ><input
+          id="showLabels"
+          param-name="labels"
+          type="checkbox"
+          placeholder="true"
+        />
+      </div>
+      <div class="form-group" id="annotationheader" style="display: block">
+        <div class="shortlabel">Created Annotations</div>
+        <a
+          class="entry-remove-all"
+          action="remove-all"
+          title="Delete all annotations"
+          >x</i
+        ></a>
+      </div>
+      <div class="form-group">
+        <div id="annotationlist">
+          <div class="entry" id="sample">
+            <span class="entry-name">Sample</span
+            ><a class="entry-adjust" action="adjust" title="Modify geometry"
+              >+</a
+            ><a
+              class="entry-edit"
+              action="edit"
+              title="Edit name and properties"
+              >E</a
+            ><a
+              class="entry-remove"
+              action="remove"
+              title="Delete this annotation"
+              >x</i
+            ></a>
+          </div>
+          <div class="entry" id="" annotation-id="1">
+            <span class="entry-name">Line 1</span
+            ><a class="entry-adjust" action="adjust" title="Modify geometry"
+              >+</a
+            ><a
+              class="entry-edit"
+              action="edit"
+              title="Edit name and properties"
+              >E</a
+            ><a
+              class="entry-remove"
+              action="remove"
+              title="Delete this annotation"
+              >x</i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <textarea
+          id="geojson"
+          type="textarea"
+          rows="15"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="none"
+          spellcheck="false"
+        ></textarea>
+      </div>
+    </div>
+    <div id="map"></div>
+    <div id="info"></div>
+    <script src="app.js"></script>
+  </body>
 </html>
